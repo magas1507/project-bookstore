@@ -1,29 +1,24 @@
 {
-  "name": "bookstore",
+  "name": "bookstore-manager-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.1.1",
-      "onFail": "download"
-    }
-  },
+  "description": "CLI para gestión de librería con Node.js, TypeScript y PostgreSQL",
+  "main": "dist/main.js",
   "type": "module",
-  "devDependencies": {
-    "@types/node": "^26.1.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+  "scripts": {
+    "dev": "ts-node --esm src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
-    "pg": "^8.22.0"
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/pg": "^8.11.4",
+    "@types/readline-sync": "^1.4.4",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
   }
 }

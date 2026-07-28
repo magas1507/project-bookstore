@@ -1,0 +1,28 @@
+# docker-compose.yml
+# Este arquivo define os serviços Docker do projeto.
+# Usamos Docker para rodar o PostgreSQL sem precisar instalar no computador.
+
+version: '3.8'   # Versão do docker-compose
+
+services:         # Lista de containers/serviços
+  postgres:       # Nome do serviço
+    image: postgres:15-alpine          # Imagem oficial do PostgreSQL versão 15 (alpine = leve)
+    container_name: bookstore_postgres # Nome do container no Docker
+    restart: unless-stopped            # Reinicia automaticamente se cair
+    environment:                       # Variáveis de ambiente do container
+      POSTGRES_USER: postgres          # Usuário do banco
+      POSTGRES_PASSWORD: postgres123   # Senha do banco
+      POSTGRES_DB: bookstore_db        # Nome do banco criado automaticamente
+    ports:
+      - "5432:5432"   # Mapeia porta do container (direita) para o computador (esquerda)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persiste dados mesmo se o container reiniciar
+    networks:
+      - bookstore_network   # Rede interna do projeto
+
+volumes:
+  postgres_data:   # Define o volume de dados persistente
+
+networks:
+  bookstore_network:   # Define a rede interna do projeto
+    driver: bridge
