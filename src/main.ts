@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
 import { pool } from './database/connection.ts';
-dotenv.config();
 
 async function main() {
   try {
