@@ -12,7 +12,7 @@ export function printSeparator(): void {
 }
 
 export function printHeader(title: string): void {
-  console.log('\n' + '═'.repeat(50));
+  console.log('\n' + '*'.repeat(50));
   console.log(`  ${title}`);
-  console.log('═'.repeat(50));
+  console.log('*'.repeat(50));
 }
