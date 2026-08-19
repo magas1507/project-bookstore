@@ -3,16 +3,14 @@ import { printHeader, printSeparator } from '../utils/formatters';
 import { AuthorController } from '../controllers/AuthorController';
 import { BookController } from '../controllers/BookController';
 import { ClientController } from '../controllers/ClientController';
-
-
-
-
-
+import { LoanController } from '../controllers/LoanController';
 
 export async function mainMenu(): Promise<void> {
   const authorController = new AuthorController();
   const bookController = new BookController();
   const clientController = new ClientController();
+  const loanController = new LoanController();
+
 
 
   let running = true;
@@ -37,6 +35,9 @@ export async function mainMenu(): Promise<void> {
         await bookController.showMenu();
         break;
       case '3': await clientController.showMenu();
+        break;
+
+      case '4': await loanController.showMenu();
         break;
 
       case '0':
