@@ -29,7 +29,14 @@ export class BookController {
             break;
           case '2': await this.listAll();
             break;
-          case '0': running = false; break;
+          case '3': await this.findById();
+            break;
+          case '4': await this.update();
+            break;
+          case '5': await this.remove();
+            break;
+          case '0': running = false;
+            break;
           default: console.log('Inválida.');
             break;
         }
@@ -55,7 +62,7 @@ export class BookController {
     const books = await this.bookService.findAll();
 
     if (books.length === 0) {
-      console.log('Nenhum livro cadastrado.');
+      console.log('Não tem livros cadastrado.');
       return;
     }
 
@@ -65,5 +72,48 @@ export class BookController {
       console.log(`  ID: ${book.id} | ${book.title} | Autor: ${book.author_name} | Qtd: ${book.available_quantity}`);
     });
     printSeparator();
+  }
+
+  private async findById(): Promise<void> {
+    const id = Number(readlineSync.question('ID do livro: '));
+    const book = await this.bookService.findById(id);
+
+    console.log(`  ID: ${book.id} | ${book.title} | Autor: ${book.author_name}`);
+
+    console.log(`  Gênero: ${book.genre ?? 'N/A'} | Ano: ${book.publication_year ?? 'N/A'} | Qtd: ${book.available_quantity}`);
+  }
+
+  private async update(): Promise<void> {
+
+    const id = Number(readlineSync.question('ID do livro: '));
+    const current = await this.bookService.findById(id);
+    const title = readlineSync.question(`Título [${current.title}]: `) || current.title;
+
+    const authorId = Number(readlineSync.question(`ID autor [${current.author_id}]: `) || current.author_id);
+
+    const quantity = Number(readlineSync.question(`Quantidade [${current.available_quantity}]: `) || current.available_quantity);
+
+    const genre = readlineSync.question(`Gênero [${current.genre ?? ''}]: `) || current.genre;
+
+    const year = readlineSync.question(`Ano [${current.publication_year ?? ''}]: `);
+
+    const updated = await this.bookService.update(
+      id, title, authorId, quantity, genre ?? undefined,
+      year ? Number(year) : current.publication_year
+    );
+
+    console.log(`Livro atualizado: ${updated.title}`);
+  }
+
+  private async remove(): Promise<void> {
+
+    const id = Number(readlineSync.question('ID do livro: '));
+    const book = await this.bookService.findById(id);
+    const confirm = readlineSync.question(`Remover "${book.title}"? (s/n): `);
+
+    if (confirm.toLowerCase() === 's') {
+      await this.bookService.delete(id);
+      console.log('Livro removido.');
+    }
   }
 }
