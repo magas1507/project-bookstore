@@ -2,13 +2,18 @@ import readlineSync from 'readline-sync';
 import { printHeader, printSeparator } from '../utils/formatters';
 import { AuthorController } from '../controllers/AuthorController';
 import { BookController } from '../controllers/BookController';
-const bookController = new BookController();
+import { ClientController } from '../controllers/ClientController';
+
+
 
 
 
 
 export async function mainMenu(): Promise<void> {
   const authorController = new AuthorController();
+  const bookController = new BookController();
+  const clientController = new ClientController();
+
 
   let running = true;
 
@@ -30,6 +35,8 @@ export async function mainMenu(): Promise<void> {
         break
       case '2':
         await bookController.showMenu();
+        break;
+      case '3': await clientController.showMenu();
         break;
 
       case '0':
