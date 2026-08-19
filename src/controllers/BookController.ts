@@ -113,7 +113,7 @@ export class BookController {
 
     if (confirm.toLowerCase() === 's') {
       await this.bookService.delete(id);
-      console.log('Livro removido.');
+      console.log('Livro eliminado');
     }
   }
 }
