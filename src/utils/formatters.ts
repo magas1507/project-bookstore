@@ -1,4 +1,4 @@
-export function formatDate(date: Date | string | null): string {
+export function formatDate(date: Date | string | null | undefined): string {
   if (!date) return 'N/A';
   const d = new Date(date);
   const day = String(d.getDate()).padStart(2, '0');
