@@ -47,4 +47,44 @@ export class BookService {
     if (!book) throw new Error(`Livro com ID ${id} não encontrado.`);
     return book;
   }
+
+  public async update(
+    id: number, title: string, authorId: number,
+    availableQuantity: number, genre?: string, publicationYear?: number
+  ): Promise<Book> {
+    await this.findById(id);
+    const author = await this.authorRepository.findById(authorId);
+    if (!author) throw new Error(`Autor com ID ${authorId} não encontrado.`);
+
+    const book: Book = {
+      title: title.trim(),
+      author_id: authorId,
+      available_quantity: availableQuantity
+    };
+
+    if (genre) {
+      book.genre = genre.trim();
+    }
+
+    if (publicationYear) {
+      book.publication_year = publicationYear;
+    }
+
+    const updated = await this.bookRepository.update(id, book);
+    if (!updated) throw new Error('Erro ao atualizar livro.');
+    return updated;
+  }
+
+  public async delete(id: number): Promise<void> {
+    await this.findById(id);
+    try {
+      const deleted = await this.bookRepository.delete(id);
+      if (!deleted) throw new Error('Erro ao remover livro.');
+    } catch (error: any) {
+      if (error.code === '23503') {
+        throw new Error('Não é possível remover: livro possui empréstimos.');
+      }
+      throw error;
+    }
+  }
 }
