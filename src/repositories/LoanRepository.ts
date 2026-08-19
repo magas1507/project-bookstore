@@ -7,7 +7,7 @@ export class LoanRepository {
     const client = await pool.connect();
 
     try {
-      await client.query('BEGIN'); // Inicia transação
+      await client.query('BEGIN');
 
 
       const insertResult = await client.query(
@@ -74,5 +74,29 @@ export class LoanRepository {
     } finally {
       client.release();
     }
+  }
+
+  public async findAll(): Promise<Loan[]> {
+    const query = `
+      SELECT l.*, b.title AS book_title, c.name AS client_name
+      FROM loans l
+      INNER JOIN books b ON l.book_id = b.id
+      INNER JOIN clients c ON l.client_id = c.id
+      ORDER BY l.loan_date DESC
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+  }
+
+  public async findById(id: number): Promise<Loan | null> {
+    const query = `
+      SELECT l.*, b.title AS book_title, c.name AS client_name
+      FROM loans l
+      INNER JOIN books b ON l.book_id = b.id
+      INNER JOIN clients c ON l.client_id = c.id
+      WHERE l.id = $1
+    `;
+    const result = await pool.query(query, [id]);
+    return result.rows.length > 0 ? result.rows[0] : null;
   }
 }
