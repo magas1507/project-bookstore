@@ -53,7 +53,7 @@ export class LoanController {
 
     printHeader('Lista de Empréstimos');
     loans.forEach((l) => {
-      const status = l.return_date ? `Devolvido ${formatDate(l.return_date)}` : '⏳ Ativo';
+      const status = l.return_date ? `Devolvido ${formatDate(l.return_date)}` : 'Ativo';
       console.log(`  ID: ${l.id} | ${l.book_title} → ${l.client_name} | ${formatDate(l.loan_date)} | ${status}`);
     });
     printSeparator();
