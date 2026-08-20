@@ -1,5 +1,6 @@
 import { pool } from './database/connection.ts';
 import { mainMenu } from './menus/mainMenu.ts';
+import { EmployeeController } from './controllers/EmployeeController';
 
 
 
@@ -10,7 +11,16 @@ async function main() {
     console.log("conectando")
 
 
-    console.log("create tables")
+
+    const employeeController = new EmployeeController();
+    const loggedEmployee = await employeeController.login();
+
+    if (!loggedEmployee) {
+      await pool.end();
+      process.exit(0);
+    }
+
+
     await mainMenu();
 
 
